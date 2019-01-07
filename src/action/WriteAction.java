@@ -16,24 +16,14 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import dao.BoardDAO;
 import vo.BoardVO;
 
-/**
- * Servlet implementation class WriteAction
- */
+
 @WebServlet("/board/insert.bo")
 public class WriteAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public WriteAction() {
         super();
-        // TODO Auto-generated constructor stub
-    }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+    }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		String realFolder="";
@@ -54,13 +44,7 @@ public class WriteAction extends HttpServlet {
 		dao.boardInsert(bv);
 		response.sendRedirect("boardList.bo");
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
 }

@@ -12,7 +12,7 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import vo.BoardVO;
-
+import vo.CommentVO;
 
 public class BoardDAO {
 	private static BoardDAO instance = new BoardDAO();
@@ -118,6 +118,11 @@ public class BoardDAO {
 				 b.setBOARD_DATE(rs.getDate("BOARD_DATE"));
 				 b.setBOARD_READCOUNT(rs.getInt("BOARD_READCOUNT"));
 				 b.setBOARD_CONTENT(rs.getString("BOARD_CONTENT"));
+				 b.setBOARD_FILE(rs.getString("BOARD_FILE"));
+				 b.setBOARD_RE_REF(rs.getInt("BOARD_RE_REF"));
+				 b.setBOARD_RE_LEV(rs.getInt("BOARD_RE_LEV"));
+				 b.setBOARD_RE_SEQ(rs.getInt("BOARD_RE_SEQ"));
+				 b.setBOARD_READCOUNT(rs.getInt("BOARD_READCOUNT"));
 		     }
 		  } catch (Exception e) {
 		    e.printStackTrace();
@@ -126,7 +131,26 @@ public class BoardDAO {
 		  }
 		  return b;
 		}
-
+	//´ñ±Û ¾²±â
+	   public void commentInsert(CommentVO cb) {
+	       Connection con= null;
+	       PreparedStatement ps =  null;
+	       ResultSet rs = null;
+	       String sql="";
+	          try {
+	             con = getConnection();
+	             sql = "insert into commentboard (cnum,userid,regdate,msg,bnum) values(cnum_seq.nextval,?,sysdate,?,?)";
+	             ps = con.prepareStatement(sql);
+	             ps.setString(1, cb.getUserid());
+	             ps.setString(2, cb.getMsg());
+	             ps.setInt(3, cb.getBnum());
+	             ps.executeUpdate();
+	          } catch (Exception e) {
+	            e.printStackTrace();
+	          }finally {
+	             closeCon(con,ps,rs);
+	          }
+	    }
 	//´Ý¾ÆÁÖ´Â °Íµé
 	private void closeCon(Connection con, PreparedStatement ps){
 	      try {
@@ -134,11 +158,9 @@ public class BoardDAO {
 	         if(ps!=null)ps.close();
 	      } catch (SQLException e) {
 	         e.printStackTrace();
-	      }
-	   
+	      } 
 	}
-	private void closeCon(Connection con,Statement st, ResultSet rs){
-	   
+	private void closeCon(Connection con,Statement st, ResultSet rs){  
 	   try {
 	      if(con!=null)con.close();
 	      if(st!=null)st.close();
