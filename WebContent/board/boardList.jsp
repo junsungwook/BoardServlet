@@ -39,10 +39,10 @@ function getData(pageNum){
 							<c:if test="${list.BOARD_RE_LEV gt 0 }">
 								<td><a href="#" onclick="location.href='view?BOARD_NUM=${list.BOARD_NUM}'">
 								<img src="../images/level.gif" width="${list.BOARD_RE_LEV*10 }" height="16">
-	             				<img src="../images/re.gif">${list.BOARD_SUBJECT }1</a></td>
+	             				<img src="../images/re.gif">${list.BOARD_SUBJECT }</a></td>
 							</c:if>
 							<c:if test="${list.BOARD_RE_LEV eq 0 }">
-								<td><a href="#" onclick="location.href='view?BOARD_NUM=${list.BOARD_NUM}'">${list.BOARD_SUBJECT }2</a></td>
+								<td><a href="#" onclick="location.href='view?BOARD_NUM=${list.BOARD_NUM}'">${list.BOARD_SUBJECT }</a></td>
 							</c:if>
 							<td>${list.BOARD_DATE }</td>
 							<td>${list.BOARD_READCOUNT }</td>
