@@ -68,47 +68,39 @@ $(document).ready(function(){
 		<form action="update" method="get">
 			<table class="table table-striped">
 				<tr>	
-					<td>글번호</td><td>${board.BOARD_NUM }</td>
+					<td>글번호</td><td>${board.BOARD_NUM }</td><td>작성자</td><td>${board.BOARD_NAME }</td>
 					<input type="hidden" value="${board.BOARD_NUM }" name="BOARD_NUM" id="BOARD_NUM">
 				</tr>
 				<tr>
-					<td>작성자</td>
-					<td>${board.BOARD_NAME }</td>
+					<td>작성날짜</td><td>${board.BOARD_DATE }</td><td>조회수</td><td>${board.BOARD_READCOUNT }</td>
+					
 				</tr>
 				<tr>
 					<td>제목</td>
-					<td><input type="text" value="${board.BOARD_SUBJECT }" name="BOARD_SUBJECT" id="BOARD_SUBJECT"></td>
-				</tr>
-				<tr>
-					<td>작성날짜</td>
-					<td>${board.BOARD_DATE }</td>
-				</tr>
-				<tr>
-					<td>조회수</td>
-					<td>${board.BOARD_READCOUNT }</td>
+					<td colspan="3"><input type="text" class="form-control" value="${board.BOARD_SUBJECT }" name="BOARD_SUBJECT" id="BOARD_SUBJECT"></td>
 				</tr>
 				<tr>
 					<td>내용</td>
-					<td><input type="text" value="${board.BOARD_CONTENT }" name="BOARD_CONTENT" id="BOARD_CONTENT"></td>
+					<td colspan="3"><textarea class="form-control col-sm-5" rows="7" name="BOARD_CONTENT" id="BOARD_CONTENT">${board.BOARD_CONTENT }</textarea></td>
 				</tr>
 				<tr>
 					<td>업로드 파일</td>
-					<td><a href="down?BOARD_FILE=${board.BOARD_FILE }">${board.BOARD_FILE }</a></td>
+					<td ><a href="down?BOARD_FILE=${board.BOARD_FILE }">${board.BOARD_FILE }</a></td>
 				</tr>
 				<tr>
-					<input type="submit" value="글수정" class="btn btn-default">
-					<input type="button" value="글삭제" class="btn btn-default" onclick="location='delete?BOARD_NUM=${board.BOARD_NUM }'">
-					<input type="button" value="글목록" class="btn btn-default" onclick="location='boardList.bo'">
+					<input type="submit" value="글수정" class="btn btn-default">&nbsp;
+					<input type="button" value="글삭제" class="btn btn-default" onclick="location='delete?BOARD_NUM=${board.BOARD_NUM }'">&nbsp;
+					<input type="button" value="글목록" class="btn btn-default" onclick="location='boardList.bo'">&nbsp;
 					<input type="button" value="답글쓰기" class="btn btn-default" onclick="location='boardRe?BOARD_NUM=${board.BOARD_NUM }&BOARD_RE_REF=${board.BOARD_RE_REF }&BOARD_RE_SEQ=${board.BOARD_RE_SEQ }&BOARD_RE_LEV=${board.BOARD_RE_LEV }'">
 				</tr>
 			</table>
 		</form>
+		<div id="result"></div>
+		<div align="right">
+			아이디 입력 <input type="text" value="" name="userid" id="userid">
+			<textarea rows="5" cols="50" id="msg" class="form-control"></textarea>
+			<input type="button" class="btn btn-default" value="댓글쓰기" id="commentBtn" class="btn btn-default">
+		</div>
 	</div>	
-	<div id="result"></div>
-	<div align="right">
-		아이디 입력 <input type="text" value="" name="userid" id="userid">
-		<textarea rows="5" cols="50" id="msg" class="form-control"></textarea>
-		<input type="button" value="댓글쓰기" id="commentBtn" class="btn btn-default">
-	</div>
 </body>
 </html>

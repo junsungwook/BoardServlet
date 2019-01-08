@@ -3,13 +3,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>여기에 제목을 입력하십시오</title>
 </head>
 <body>
 <div class="container">
 	<h2>답글</h2>
-	
 	<form action="boardRe" method="post" enctype="multipart/form-data" name="boardform">
 	<input type = "hidden" name = "BOARD_NUM" value="${BOARD_NUM }">
 	<input type = "hidden" name = "BOARD_RE_REF" value="${BOARD_RE_REF }">
@@ -37,7 +37,7 @@
 				<td class="td_right"><input name="board_file" type="file" id="board_file"></td>
 			</tr>
 		</table>
-			<input type="submit" value="등록">&nbsp;&nbsp; <input	type="reset" value="다시쓰기">
+			<input type="submit" class="btn btn-default" value="등록">&nbsp;&nbsp;<input type="reset" class="btn btn-default" value="다시쓰기">
 	</form>
 </div>
 </body>
