@@ -175,6 +175,35 @@ public class BoardDAO {
 	  }
 	  return arr;
 	}
+	//´ñ±Û »Ñ¸®±â
+   public ArrayList<CommentVO> commentList(int bnum) {
+       Connection con= null;
+       PreparedStatement ps =  null;
+       ResultSet rs = null;
+       ArrayList<CommentVO> arr = new ArrayList<>();
+       String sql="";
+          try {
+             con = getConnection();
+             sql = "select * from commentboard where bnum=? order by cnum desc";
+             ps = con.prepareStatement(sql);
+             ps.setInt(1, bnum);
+             rs = ps.executeQuery();
+             while(rs.next()) {
+            	 CommentVO cb = new CommentVO();
+            	 cb.setCnum(rs.getInt("cnum"));
+            	 cb.setUserid(rs.getString("userid"));
+            	 cb.setRegdate(rs.getString("regdate"));
+            	 cb.setMsg(rs.getString("msg"));
+            	 cb.setBnum(rs.getInt("bnum")); 
+ 				 arr.add(cb);
+             }
+          } catch (Exception e) {
+            e.printStackTrace();
+          }finally {
+             closeCon(con,ps,rs);
+          }
+          return arr; 
+    }
 	//Á¦¸ñ ´­·¶À» ¶§ »ó¼¼º¸±â
 	public BoardVO boardView(int num) {
 		   Connection con= null;

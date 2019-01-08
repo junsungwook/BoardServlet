@@ -6,7 +6,59 @@
 <head>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
-
+$(document).ready(function(){
+	$.ajax({
+		url:"C_List",
+		type:"post",
+		data:{"BOARD_NUM":$("#BOARD_NUM").val()},
+		success:function(data){
+			if(data!=null){
+				data = $.parseJSON(data);
+				var htmlStr="";
+				htmlStr +="<table class='table table-striped table-dark'>";
+				for(var i=0; i<data.length;i++){
+					htmlStr +="<tr>";
+					htmlStr +="<td>"+data[i].cnum+"</td>";
+					htmlStr +="<td>"+data[i].userid+"</td>";
+					htmlStr +="<td>"+data[i].regdate+"</td>";
+					htmlStr +="<td>"+data[i].msg+"</td>";
+					htmlStr +="</tr>";
+				}
+				htmlStr +="</table>";
+				$("#result").html(htmlStr);	
+			}
+		},
+		error:function(e){
+			alert("error : "+ e);
+		}
+	});
+	$("#commentBtn").click(function(){
+		$.ajax({
+			url:"C_Insert",
+			type:"post",
+			data:{"msg":$("#msg").val(),"BOARD_NUM":$("#BOARD_NUM").val(),"userid":$("#userid").val()},
+			success:function(data){
+				data = $.parseJSON(data);
+				var htmlStr="";
+				htmlStr +="<table class='table table-striped table-dark'>";
+				for(var i=0; i<data.length;i++){
+					htmlStr +="<tr>";
+					htmlStr +="<td>"+data[i].cnum+"</td>";
+					htmlStr +="<td>"+data[i].userid+"</td>";
+					htmlStr +="<td>"+data[i].regdate+"</td>";
+					htmlStr +="<td>"+data[i].msg+"</td>";
+					htmlStr +="</tr>";
+				}
+				htmlStr +="</table>";
+				$("#result").html(htmlStr);	
+				$("#msg").val("");
+			},
+			error:function(e){
+				alert("inserterror : "+ e);
+			}
+		});
+	});
+});
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>여기에 제목을 입력하십시오</title>
@@ -40,6 +92,10 @@
 					<td><input type="text" value="${board.BOARD_CONTENT }" name="BOARD_CONTENT" id="BOARD_CONTENT"></td>
 				</tr>
 				<tr>
+					<td>업로드 파일</td>
+					<td><a href="down?BOARD_FILE=${board.BOARD_FILE }">${board.BOARD_FILE }</a></td>
+				</tr>
+				<tr>
 					<input type="submit" value="글수정" class="btn btn-default">
 					<input type="button" value="글삭제" class="btn btn-default" onclick="location='delete?BOARD_NUM=${board.BOARD_NUM }'">
 					<input type="button" value="글목록" class="btn btn-default" onclick="location='boardList.jsp'">
@@ -48,7 +104,11 @@
 			</table>
 		</form>
 	</div>	
-		
-		
+	<div id="result"></div>
+	<div align="right">
+		아이디 입력 <input type="text" value="" name="userid" id="userid">
+		<textarea rows="5" cols="50" id="msg" class="form-control"></textarea>
+		<input type="button" value="댓글쓰기" id="commentBtn" class="btn btn-default">
+	</div>
 </body>
 </html>
