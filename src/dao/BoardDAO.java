@@ -25,6 +25,25 @@ public class BoardDAO {
 		DataSource ds = (DataSource)envCtx.lookup("jdbc/board");
 		return ds.getConnection();
 	}
+	//조회수 업데이트
+	   public void updateReadCount(int board_num){
+		    Connection con= null;
+			PreparedStatement ps = null;
+			int updateCount = 0;
+			String sql="update board set BOARD_READCOUNT = "+
+					"BOARD_READCOUNT+1 where BOARD_NUM = "+board_num;
+			try{
+				con = getConnection();
+				ps=con.prepareStatement(sql);
+				updateCount = ps.executeUpdate();
+			} catch (Exception e) {
+				// TODO 자동 생성된 catch 블록
+				e.printStackTrace();
+			}
+			finally{
+				closeCon(ps);
+			}
+		}
 	//게시판 글 카운팅
 	public int boardCount() {
 		int count = 0;
@@ -95,7 +114,6 @@ public class BoardDAO {
 	  }finally {
 	     closeCon(con,st,rs);
 	  }
-	  System.out.println(arr.size());
 	  return arr;
 	}
 	//제목 눌렀을 때 상세보기
@@ -159,6 +177,14 @@ public class BoardDAO {
 	      } catch (SQLException e) {
 	         e.printStackTrace();
 	      } 
+	}
+	private void closeCon(PreparedStatement ps){
+	      
+	      try {
+	         if(ps!=null)ps.close();
+	      } catch (SQLException e) {
+	         e.printStackTrace();
+	      }
 	}
 	private void closeCon(Connection con,Statement st, ResultSet rs){  
 	   try {
