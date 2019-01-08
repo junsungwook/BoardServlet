@@ -123,6 +123,47 @@ public class BoardDAO {
 		}
 		return count;
 	}
+	//답글 쓰기
+	public void boardReInsert(BoardVO b) {
+        Connection con= null;
+        PreparedStatement ps =  null;
+        ResultSet rs = null;
+        int number = 0;
+        String sql="";
+           try {
+              con = getConnection();
+              //부모글
+              int BOARD_NUM = b.getBOARD_NUM();
+              int BOARD_RE_REF=b.getBOARD_RE_REF();
+              int BOARD_RE_SEQ=b.getBOARD_RE_SEQ();
+              int BOARD_RE_LEV=b.getBOARD_RE_LEV();
+              ps=con.prepareStatement("select max(BOARD_RE_SEQ) from board where BOARD_RE_REF="+BOARD_RE_REF);
+              rs=ps.executeQuery();
+              if(rs.next()) {
+           	   number = rs.getInt(1)+1;
+              }
+        	  BOARD_RE_SEQ=BOARD_RE_SEQ+1;
+         	  BOARD_RE_LEV=BOARD_RE_LEV+1;
+              
+           	  sql = "insert into board values(board_num_seq.nextval,?,?,?,?,?,?,?,?,0,sysdate)";
+              ps = con.prepareStatement(sql);
+              ps.setString(1, b.getBOARD_NAME());
+              ps.setString(2, b.getBOARD_PASS());
+              ps.setString(3, b.getBOARD_SUBJECT());
+              ps.setString(4, b.getBOARD_CONTENT());
+              ps.setString(5, b.getBOARD_FILE());
+              ps.setInt(6, BOARD_RE_REF);
+              ps.setInt(7, BOARD_RE_LEV);
+              ps.setInt(8, number);
+              ps.executeQuery();
+           } catch (Exception e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+           }finally {
+              closeCon(con,ps,rs);
+           }
+           
+     }
 	//게시판 글 쓰기
 	public void boardInsert(BoardVO bv) {
         Connection con= null;
@@ -133,7 +174,6 @@ public class BoardDAO {
               con = getConnection();
               sql = "insert into board values(board_num_seq.nextval,?,?,?,?,?,board_num_seq.nextval,0,0,0,sysdate)";
               ps = con.prepareStatement(sql);
-              System.out.println(sql);
               ps.setString(1, bv.getBOARD_NAME());
               ps.setString(2, bv.getBOARD_PASS());
               ps.setString(3, bv.getBOARD_SUBJECT());
@@ -156,7 +196,7 @@ public class BoardDAO {
 	   String sql="";
 	   try {
 	     con = getConnection();
-	     sql = "select * from (select rownum rn,aa.* from (select * from board order by board_num desc)aa) where rn>="+startRow+" and rn<="+endRow;
+	     sql = "select * from (select rownum rn,aa.* from (select * from board order by BOARD_RE_REF desc,BOARD_RE_SEQ asc)aa) where rn>="+startRow+" and rn<="+endRow;
 		 st = con.createStatement();
 		 rs = st.executeQuery(sql);
 		 while(rs.next()) {
@@ -165,7 +205,13 @@ public class BoardDAO {
 			 b.setBOARD_NAME(rs.getString("BOARD_NAME"));
 			 b.setBOARD_SUBJECT(rs.getString("BOARD_SUBJECT"));
 			 b.setBOARD_DATE(rs.getDate("BOARD_DATE"));
-			 b.setBOARD_READCOUNT(rs.getInt("BOARD_READCOUNT")); 
+			 b.setBOARD_READCOUNT(rs.getInt("BOARD_READCOUNT"));
+			 b.setBOARD_CONTENT(rs.getString("BOARD_CONTENT"));
+			 b.setBOARD_FILE(rs.getString("BOARD_FILE"));
+			 b.setBOARD_RE_REF(rs.getInt("BOARD_RE_REF"));
+			 b.setBOARD_RE_LEV(rs.getInt("BOARD_RE_LEV"));
+			 b.setBOARD_RE_SEQ(rs.getInt("BOARD_RE_SEQ"));
+			 b.setBOARD_READCOUNT(rs.getInt("BOARD_READCOUNT"));
 			 arr.add(b);
 	     }
 	  } catch (Exception e) {

@@ -98,8 +98,8 @@ $(document).ready(function(){
 				<tr>
 					<input type="submit" value="글수정" class="btn btn-default">
 					<input type="button" value="글삭제" class="btn btn-default" onclick="location='delete?BOARD_NUM=${board.BOARD_NUM }'">
-					<input type="button" value="글목록" class="btn btn-default" onclick="location='boardList.jsp'">
-					<input type="button" value="답글쓰기" class="btn btn-default" onclick="location='board.jsp?BOARD_NUM=${board.BOARD_NUM }&BOARD_RE_REF=${board.BOARD_RE_REF }&BOARD_RE_SEQ=${board.BOARD_RE_SEQ }&BOARD_RE_LEV=${board.BOARD_RE_LEV }'">
+					<input type="button" value="글목록" class="btn btn-default" onclick="location='boardList.bo'">
+					<input type="button" value="답글쓰기" class="btn btn-default" onclick="location='boardRe?BOARD_NUM=${board.BOARD_NUM }&BOARD_RE_REF=${board.BOARD_RE_REF }&BOARD_RE_SEQ=${board.BOARD_RE_SEQ }&BOARD_RE_LEV=${board.BOARD_RE_LEV }'">
 				</tr>
 			</table>
 		</form>
