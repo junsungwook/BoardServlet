@@ -6,71 +6,49 @@
 <head>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
-$("#commentBtn").click(function(){
-	$.ajax({
-		url:"commentInsert.jsp",
-		type:"post",
-		data:{"msg":$("#msg").val(),"num":${board.BOARD_NUM }},
-		success:function(data){
-			if(data.trim()==1){
-				alert("댓글 달기는 로그인 후 이용 가능합니다");
-				location.href="login.jsp";
-			}else{
-				data = $.parseJSON(data);
-				var htmlStr="";
-				htmlStr +="<table class='table table-striped table-dark'>";
-				for(var i=0; i<data.length;i++){
-					htmlStr +="<tr>";
-					htmlStr +="<td>"+data[i].cnum+"</td>";
-					htmlStr +="<td>"+data[i].userid+"</td>";
-					htmlStr +="<td>"+data[i].regdate+"</td>";
-					htmlStr +="<td>"+data[i].msg+"</td>";
-					htmlStr +="</tr>";
-				}
-				htmlStr +="</table>";
-				$("#result").html(htmlStr);	
-				$("#msg").val("");
-			}	
-		},
-		error:function(e){
-			alert("error : "+ e);
-		}
-	});
-})
+
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>여기에 제목을 입력하십시오</title>
 </head>
 <body>
 	<div class="container">
-		<table class="table table-striped">
-			<tr>	
-				<td>글번호</td><td>${board.BOARD_NUM }</td>
-			</tr>
-			<tr>
-				<td>작성자</td>
-				<td>${board.BOARD_NAME }</td>
-			</tr>
-			<tr>
-				<td>제목</td>
-				<td>${board.BOARD_SUBJECT }</td>
-			</tr>
-			<tr>
-				<td>작성날짜</td>
-				<td>${board.BOARD_DATE }</td>
-			</tr>
-			<tr>
-				<td>조회수</td>
-				<td>${board.BOARD_READCOUNT }</td>
-			</tr>
-			<tr>
-				<td>내용</td>
-				<td>${board.BOARD_CONTENT }</td>
-			</tr>
-		</table>
-		<div align="right">
-		<input type="button" value="답글쓰기" class="btn btn-default" onclick="location='board.jsp?BOARD_NUM=${board.BOARD_NUM }&BOARD_RE_REF=${board.BOARD_RE_REF }&BOARD_RE_SEQ=${board.BOARD_RE_SEQ }&BOARD_RE_LEV=${board.BOARD_RE_LEV }'">
-	</div>
+		<form action="update" method="get">
+			<table class="table table-striped">
+				<tr>	
+					<td>글번호</td><td>${board.BOARD_NUM }</td>
+					<input type="hidden" value="${board.BOARD_NUM }" name="BOARD_NUM" id="BOARD_NUM">
+				</tr>
+				<tr>
+					<td>작성자</td>
+					<td>${board.BOARD_NAME }</td>
+				</tr>
+				<tr>
+					<td>제목</td>
+					<td><input type="text" value="${board.BOARD_SUBJECT }" name="BOARD_SUBJECT" id="BOARD_SUBJECT"></td>
+				</tr>
+				<tr>
+					<td>작성날짜</td>
+					<td>${board.BOARD_DATE }</td>
+				</tr>
+				<tr>
+					<td>조회수</td>
+					<td>${board.BOARD_READCOUNT }</td>
+				</tr>
+				<tr>
+					<td>내용</td>
+					<td><input type="text" value="${board.BOARD_CONTENT }" name="BOARD_CONTENT" id="BOARD_CONTENT"></td>
+				</tr>
+				<tr>
+					<input type="submit" value="글수정" class="btn btn-default">
+					<input type="button" value="글삭제" class="btn btn-default" onclick="location='delete?BOARD_NUM=${board.BOARD_NUM }'">
+					<input type="button" value="글목록" class="btn btn-default" onclick="location='boardList.jsp'">
+					<input type="button" value="답글쓰기" class="btn btn-default" onclick="location='board.jsp?BOARD_NUM=${board.BOARD_NUM }&BOARD_RE_REF=${board.BOARD_RE_REF }&BOARD_RE_SEQ=${board.BOARD_RE_SEQ }&BOARD_RE_LEV=${board.BOARD_RE_LEV }'">
+				</tr>
+			</table>
+		</form>
 	</div>	
+		
+		
 </body>
 </html>

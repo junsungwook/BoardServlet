@@ -25,6 +25,65 @@ public class BoardDAO {
 		DataSource ds = (DataSource)envCtx.lookup("jdbc/board");
 		return ds.getConnection();
 	}
+	//수정시 비번 조회 한 후 수정하기
+	   public boolean updateBoard(int BOARD_NUM,String BOARD_PASS,String BOARD_SUBJECT,String BOARD_CONTENT) {
+	      Connection con =null;
+	      PreparedStatement ps = null;
+	      ResultSet rs = null;
+	      Statement st = null;
+	      String sql="";
+	      boolean b=false;
+	         try {
+	        	 con=getConnection();
+		            sql = "select BOARD_PASS from board where BOARD_NUM=?";
+		            ps = con.prepareStatement(sql);
+		            ps.setInt(1, BOARD_NUM);
+		            rs = ps.executeQuery();
+		            if(rs.next()) {
+		            	if(rs.getString("BOARD_PASS").equals(BOARD_PASS)) {
+		            		sql = "update board set BOARD_SUBJECT='"+BOARD_SUBJECT+"',BOARD_CONTENT='"+BOARD_CONTENT+"' where BOARD_NUM="+BOARD_NUM;
+		            		st = con.createStatement();
+		                    st.executeQuery(sql);
+			            	b = true;
+	            	}	 
+	            }
+	            System.out.println("dd:"+sql);
+	         } catch (Exception e) {
+	            e.printStackTrace();
+	         }finally {
+	            closeCon(con,ps,rs);
+	         }
+			return b;
+	   }
+	//삭제시 비번 조회 한 후 삭제하기
+	public boolean delBoard(int BOARD_NUM,String BOARD_PASS) {
+	      Connection con =null;
+	      PreparedStatement ps = null;
+	      ResultSet rs = null;
+	      String sql="";
+	      boolean b=false;
+	         try {
+	        	con=getConnection();
+	            sql = "select BOARD_PASS from board where BOARD_NUM=?";
+	            ps = con.prepareStatement(sql);
+	            ps.setInt(1, BOARD_NUM);
+	            rs = ps.executeQuery();
+	            if(rs.next()) {
+	            	if(rs.getString("BOARD_PASS").equals(BOARD_PASS)) {
+	            		sql = "delete from board where BOARD_NUM=?";
+		            	 PreparedStatement ps1 =con.prepareStatement(sql); 
+		            	 ps1.setInt(1, BOARD_NUM);
+		            	 ps1.executeUpdate();
+		            	 b = true;
+	            	}	 
+	            }
+	         } catch (Exception e) {
+	            e.printStackTrace();
+	         }finally {
+	            closeCon(con,ps,rs);
+	         }
+			return b;
+	   }
 	//조회수 업데이트
 	   public void updateReadCount(int board_num){
 		    Connection con= null;
