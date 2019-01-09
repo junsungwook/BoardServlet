@@ -32,9 +32,9 @@ function getData(pageNum){
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${lists}" var="list">
+					<c:forEach items="${lists}" var="list" varStatus="status">
 						<tr>	
-							<td>${list.BOARD_NUM }</td>   
+							<td>${number-status.index }</td>   
 							<td>${list.BOARD_NAME }</a></td>
 							<c:if test="${list.BOARD_RE_LEV gt 0 }">
 								<td><a href="#" onclick="location.href='view?BOARD_NUM=${list.BOARD_NUM}'">

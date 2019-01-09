@@ -60,12 +60,13 @@ public class ListAction extends HttpServlet {
 		
 		if(endpage > totpage) endpage=totpage;
 		
+		int number=count-(currentPage-1)*pageSize;
 		request.setAttribute("totpage", totpage);
 		request.setAttribute("startpage", startpage);
 		request.setAttribute("endpage", endpage);
 		request.setAttribute("currentPage", currentPage);
 		request.setAttribute("blockpage", blockpage);
-		
+		request.setAttribute("number", number);
 		request.setAttribute("lists", arr);
 		request.setAttribute("count", count);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("boardList.jsp");
