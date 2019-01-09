@@ -74,7 +74,7 @@ function getData(pageNum){
 				<div class="col-xs-2" id="sele">
 				   <select id="field" class="form-control" name="field">
 				      <option value="BOARD_SUBJECT"> 제목
-				      <option value="BOARD_NAME"> 작성자정희선생님
+				      <option value="BOARD_NAME"> 작성자
 				   </select>
 				</div>
 				<div class="col-xs-3">
