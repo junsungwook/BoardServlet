@@ -34,14 +34,22 @@ public class ListAction extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		BoardDAO dao = BoardDAO.getInstance();
-	
+		
 		String pageNum = request.getParameter("pageNum")==null?"1":request.getParameter("pageNum");
 		int currentPage = Integer.parseInt(pageNum);
 		int pageSize = 5;
 		int startRow = (currentPage-1)*pageSize+1; //2page -> 6번댓글부터
 		int endRow = currentPage*pageSize;
-		int count = dao.boardCount();
-		ArrayList<BoardVO> arr = dao.boardList(startRow,endRow);
+		
+		String word="";
+		String field="";
+		if(request.getParameter("word")!=null){
+			word=request.getParameter("word");
+			field=request.getParameter("field");
+		}
+		int count = dao.boardCount(field,word);
+		ArrayList<BoardVO> arr = dao.boardList(field,word,startRow,endRow);
+		
 		
 		
 		//총페이지수

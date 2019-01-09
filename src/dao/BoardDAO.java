@@ -104,25 +104,32 @@ public class BoardDAO {
 			}
 		}
 	//게시판 글 카운팅
-	public int boardCount() {
-		int count = 0;
-		Connection con = null;
-		Statement st = null;
-		ResultSet rs = null;
-		try {
-			con = getConnection();
-			st = con.createStatement();
-			String sql = "select count(*) from board";
-			rs = st.executeQuery(sql);
-			if(rs.next())
-			count = rs.getInt(1);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			closeCon(con, st, rs);
-		}
-		return count;
-	}
+	   public int boardCount(String field,String word) {
+		      Connection con =null;
+		      Statement st = null;
+		      ResultSet rs = null;
+		      String sql="";
+		      int cnt =0;
+		         try {
+		         con = getConnection();
+		         if(field.equals("")) {
+		        	 sql = "select count(*) from board";
+		         }else {
+		             sql="select count(*) from board where "+field+" like '%"+word+"%'";
+		         }
+		            st = con.createStatement();
+		            rs = st.executeQuery(sql);
+		            if (rs.next()) {
+		               cnt=rs.getInt(1);
+		            }
+		         } catch (Exception e) {
+		            // TODO Auto-generated catch block
+		            e.printStackTrace();
+		         }finally {
+		            closeCon(con,st,rs);
+		         }
+		      return cnt;
+		   }
 	//답글 쓰기
 	public void boardReInsert(BoardVO b) {
         Connection con= null;
@@ -188,7 +195,7 @@ public class BoardDAO {
            }    
      }
 	//게시판 글 목록(전체보기)
-	public ArrayList<BoardVO> boardList(int startRow, int endRow) {
+	public ArrayList<BoardVO> boardList(String field, String search,int startRow, int endRow) {
 	   Connection con= null;
 	   Statement st = null;
 	   ResultSet rs = null; 
@@ -196,24 +203,28 @@ public class BoardDAO {
 	   String sql="";
 	   try {
 	     con = getConnection();
-	     sql = "select * from (select rownum rn,aa.* from (select * from board order by BOARD_RE_REF desc,BOARD_RE_SEQ asc)aa) where rn>="+startRow+" and rn<="+endRow;
-		 st = con.createStatement();
-		 rs = st.executeQuery(sql);
-		 while(rs.next()) {
-			 BoardVO b = new BoardVO();
-			 b.setBOARD_NUM(rs.getInt("BOARD_NUM"));
-			 b.setBOARD_NAME(rs.getString("BOARD_NAME"));
-			 b.setBOARD_SUBJECT(rs.getString("BOARD_SUBJECT"));
-			 b.setBOARD_DATE(rs.getDate("BOARD_DATE"));
-			 b.setBOARD_READCOUNT(rs.getInt("BOARD_READCOUNT"));
-			 b.setBOARD_CONTENT(rs.getString("BOARD_CONTENT"));
-			 b.setBOARD_FILE(rs.getString("BOARD_FILE"));
-			 b.setBOARD_RE_REF(rs.getInt("BOARD_RE_REF"));
-			 b.setBOARD_RE_LEV(rs.getInt("BOARD_RE_LEV"));
-			 b.setBOARD_RE_SEQ(rs.getInt("BOARD_RE_SEQ"));
-			 b.setBOARD_READCOUNT(rs.getInt("BOARD_READCOUNT"));
-			 arr.add(b);
+	     if(field.equals("")) {
+	    	 sql = "select * from (select rownum rn,aa.* from (select * from board order by BOARD_RE_REF desc,BOARD_RE_SEQ asc)aa) where rn>="+startRow+" and rn<="+endRow;
+	     }else {
+	    	 sql = "select * from (select rownum rn,aa.* from (select * from board where "+field+" like '%"+search+"%' order by BOARD_RE_REF desc,BOARD_RE_SEQ asc)aa) where rn>="+startRow+" and rn<="+endRow;
 	     }
+	    	 st = con.createStatement();
+	    	 rs = st.executeQuery(sql);
+	    	 while(rs.next()) {
+				 BoardVO b = new BoardVO();
+				 b.setBOARD_NUM(rs.getInt("BOARD_NUM"));
+				 b.setBOARD_NAME(rs.getString("BOARD_NAME"));
+				 b.setBOARD_SUBJECT(rs.getString("BOARD_SUBJECT"));
+				 b.setBOARD_DATE(rs.getDate("BOARD_DATE"));
+				 b.setBOARD_READCOUNT(rs.getInt("BOARD_READCOUNT"));
+				 b.setBOARD_CONTENT(rs.getString("BOARD_CONTENT"));
+				 b.setBOARD_FILE(rs.getString("BOARD_FILE"));
+				 b.setBOARD_RE_REF(rs.getInt("BOARD_RE_REF"));
+				 b.setBOARD_RE_LEV(rs.getInt("BOARD_RE_LEV"));
+				 b.setBOARD_RE_SEQ(rs.getInt("BOARD_RE_SEQ"));
+				 b.setBOARD_READCOUNT(rs.getInt("BOARD_READCOUNT"));
+				 arr.add(b);
+		     }
 	  } catch (Exception e) {
 	    e.printStackTrace();
 	  }finally {

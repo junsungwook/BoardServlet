@@ -34,7 +34,7 @@ function getData(pageNum){
 				<tbody>
 					<c:forEach items="${lists}" var="list">
 						<tr>	
-							<td>${list.BOARD_NUM }</td>
+							<td>${list.BOARD_NUM }</td>   
 							<td>${list.BOARD_NAME }</a></td>
 							<c:if test="${list.BOARD_RE_LEV gt 0 }">
 								<td><a href="#" onclick="location.href='view?BOARD_NUM=${list.BOARD_NUM}'">
@@ -68,7 +68,21 @@ function getData(pageNum){
 			<c:if test="${endpage<totpage }">
 				<a href="javascript:getData(${endpage+1 })">[다음]</a>
 			</c:if>
+			<br><br><br>
 			</div>
-		</div>	
+			<form name="search" action="boardList.bo">
+				<div class="col-xs-2" id="sele">
+				   <select id="field" class="form-control" name="field">
+				      <option value="BOARD_SUBJECT"> 제목
+				      <option value="BOARD_NAME"> 작성자
+				   </select>
+				</div>
+				<div class="col-xs-3">
+				   <input type='text' id='word' name='word' size='10' class="form-control" placeholder="검색어입력">
+				</div>
+				   <input type='submit' class="btn btn-default" value="검색">
+				   <input type="button" class="btn btn-default" onclick="location='writeForm.jsp'" value="글쓰기">
+			</form>
+		</div>
 	</body>
 </html>
