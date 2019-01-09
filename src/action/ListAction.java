@@ -37,7 +37,7 @@ public class ListAction extends HttpServlet {
 		
 		String pageNum = request.getParameter("pageNum")==null?"1":request.getParameter("pageNum");
 		int currentPage = Integer.parseInt(pageNum);
-		int pageSize = 5;
+		int pageSize = 7;
 		int startRow = (currentPage-1)*pageSize+1; //2page -> 6번댓글부터
 		int endRow = currentPage*pageSize;
 		
